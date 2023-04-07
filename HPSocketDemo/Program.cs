@@ -38,25 +38,28 @@ namespace HPSocketDemo
         {
             hs.OnEasyMessageData += Hs_OnEasyMessageData;
 
-            if (url.ToString().Contains("getcid/?iids="))
-            {
-                string cid = string.Empty;
-                string str = System.Web.HttpUtility.UrlDecode(url);
-                string iid = Regex.Replace(str, "-", "").Replace(" ", "").Replace("getcid/?iids=", "");
-                iid = Regex.Match(iid, "[\\d]+").Value;
-                if (Regex.IsMatch(iid, "[\\d]{63}"))
+            var t =Task.Factory.StartNew(() => {
+                if (url.ToString().Contains("getcid/?iids="))
                 {
-                    iid = Regex.Match(iid, "[\\d]{63}").Value;
+                    string cid = string.Empty;
+                    string str = System.Web.HttpUtility.UrlDecode(url);
+                    string iid = Regex.Replace(str, "-", "").Replace(" ", "").Replace("getcid/?iids=", "");
+                    iid = Regex.Match(iid, "[\\d]+").Value;
+                    if (Regex.IsMatch(iid, "[\\d]{63}"))
+                    {
+                        iid = Regex.Match(iid, "[\\d]{63}").Value;
+                    }
+                    else if (Regex.IsMatch(iid, "[\\d]{54}"))
+                    {
+                        iid = Regex.Match(iid, "[\\d]{54}").Value;
+                    }
+                    //string iid = "690494024111248275641345743539870015978502549282339542426203524";
+                    cid = XmlRequest.MSXmlRequest(1, iid, "00000-04249-038-820384-03-2052-9200.0000-0902023");
+                    html = $"安装ID：{iid}</br>确认ID：{cid}";
                 }
-                else if (Regex.IsMatch(iid, "[\\d]{54}"))
-                {
-                    iid = Regex.Match(iid, "[\\d]{54}").Value;
-                }
-                //string iid = "690494024111248275641345743539870015978502549282339542426203524";
-                cid = XmlRequest.MSXmlRequest(1, iid, "00000-04249-038-820384-03-2052-9200.0000-0902023");
-                html = $"安装ID：{iid}</br>确认ID：{cid}";
-                
-            }
+            });
+            t.Wait();
+            
             return HttpParseResult.Ok;
         }
 
