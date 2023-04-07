@@ -92,7 +92,7 @@ namespace HPSocketDemo
             // 响应头
             var responseHeaders = new List<NameValue>
             {
-                new NameValue{ Name = "Content-Type", Value = "text/html"},
+                new NameValue{ Name = "Content-Type", Value = "text/html;charset=\"gb2312\""},
             };
 
             // 发送响应数据到客户端
