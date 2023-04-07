@@ -36,6 +36,7 @@ namespace HPSocketDemo
 
         private static HttpParseResult Hs_OnRequestLine(IHttp sender, IntPtr connId, string method, string url)
         {
+
             hs.OnEasyMessageData += Hs_OnEasyMessageData;
 
             var t =Task.Factory.StartNew(() => {
@@ -65,6 +66,13 @@ namespace HPSocketDemo
 
         private static HttpParseResult Hs_OnEasyMessageData(IHttpEasyServer sender, IntPtr connId, byte[] data)
         {
+            string ip = string.Empty;
+            ushort port = 0;
+            if (sender.GetRemoteAddress(connId, out ip, out port)) {
+
+                Console.WriteLine($"user client：{ip}:{port}");
+            }
+            
             var headers = sender.GetAllHeaders(connId);
             var sb = new StringBuilder();
             foreach (var item in headers)
@@ -92,7 +100,7 @@ namespace HPSocketDemo
             {
                 return HttpParseResult.Error;
             }
-
+            Console.WriteLine($"user client：{ip}:{port}，response：{html}");
             // 不是保活连接踢掉
             if (sender.GetHeader(connId, "Connection") != "Keep-Alive")
             {
@@ -100,6 +108,12 @@ namespace HPSocketDemo
             }
 
             return HttpParseResult.Ok;
+        }
+
+        private static string GetMsg(string msg)
+        {
+            byte[] bytes = Encoding.GetEncoding("GB2312").GetBytes(msg);
+            return Encoding.GetEncoding("GB2312").GetString(bytes);
         }
     }
 }
