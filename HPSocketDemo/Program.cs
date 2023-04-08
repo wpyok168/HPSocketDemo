@@ -88,11 +88,11 @@ namespace HPSocketDemo
             //var html = "<h1>获取确认id</h1>";
 
             // 响应体
-            var responseBody = Encoding.GetEncoding("gb2312").GetBytes(html);
+            var responseBody = Encoding.GetEncoding("utf-8").GetBytes(html);
             // 响应头
             var responseHeaders = new List<NameValue>
             {
-                new NameValue{ Name = "Content-Type", Value = "text/html;charset=\"gb2312\""},
+                new NameValue{ Name = "Content-Type", Value = "text/html;charset=\"utf-8\""},
             };
 
             // 发送响应数据到客户端
