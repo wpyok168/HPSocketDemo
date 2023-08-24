@@ -44,16 +44,16 @@ namespace GetCIDbyBatchActivation
                 switch (errcode)
                 {
                     case "0x7F":
-                        return "Exceeded";
+                        return "Exceeded（超过激活次数）";
                     case "0x67":
                     case "0xD5":
-                        return "Blocked";
+                        return "Blocked（密钥已被封）";
                     case "0x68":
-                        return "Invalidkey";
+                        return "Invalidkey（无效其它类型密钥）";
                     case "0x86":
-                        return "InvalidType";
+                        return "InvalidType（无效其它类型）";
                     case "0x90":
-                        return "IIDError";
+                        return "IIDError（安装ID有误）";
                     case "0x71":
                         return "NeverObtained";
                     default:
